@@ -12,11 +12,11 @@ bool LuhnAlgorithm(long long int);
 int GetSumEveryOtherDigit(long long int);
 
 //most MasterCard numbers start with 51, 52, 53, 54, or 55  MasterCard uses 16-digit numbers,
-//; and all Visa numbers start with 4.  and Visa uses 13- and 16-digit numbers.  b
+//; and all Visa numbers start with 4.  and Visa uses 13- and 16-digit numbers.  
 
 int main(void){
     ///long long int Input = GetLong();
-    //printf ("%lld\n", Input); a
+    //printf ("%lld\n", Input); 
 
     long long int Input = 4003600000000014LL; 
     int Length = GetLength(Input);
