@@ -4,12 +4,12 @@
 #include <math.h> 
 #include <stdbool.h> 
 
-
 long long int GetLong();
 int GetLength(long long int);
 int GetFirstTwoDigits(long long int);
-bool LuhnAlgorithm(long long int);
-int GetSumEveryOtherDigit(long long int);
+bool LuhnAlgorithm(long long int, int Length);
+int GetSumEveryOtherDigitTimesTwo(long long int Input, int Length);
+int GetSumEveryDigit(long long int Input, int Length);
 
 //most MasterCard numbers start with 51, 52, 53, 54, or 55  MasterCard uses 16-digit numbers,
 //; and all Visa numbers start with 4.  and Visa uses 13- and 16-digit numbers.  
@@ -21,11 +21,10 @@ int main(void){
     long long int Input = 4003600000000014LL; 
     int Length = GetLength(Input);
     int FirstTwoDigits = GetFirstTwoDigits(Input); 
-    int SumEveryOtherDigit = GetSumEveryOtherDigit(Input);
-    printf("%i", SumEveryOtherDigit);
     
-    //LuhnAlgorithm(Input);d
+    LuhnAlgorithm(Input, Length);
 
+ 
 
     //Aangegeven of het een terecht nummer is 
     // All American Express numbers start with 34 or 37; American Express uses 15-digit numbers, 
@@ -63,51 +62,58 @@ int GetFirstTwoDigits(long long int Input){
 }
 
 
-
 //IN PROGRESS///
 
-bool LuhnAlgorithm(long long int Input){
+//Check if the number qaulifies Luhns Algoritm
+//See implementation for the explanation
+bool LuhnAlgorithm(long long int Input, int Length){
     
     
-    //Twee methodes 
-    //Methode 1 som van elk ander getal * 2
-    int SumEveryOtherDigit = GetSumEveryOtherDigitTimesTwo(Input);
+    //Method sum of every other digit * 2
+    int SumEveryOtherDigitTimesTwo = GetSumEveryOtherDigitTimesTwo(Input, Length);
     //Methode 2 som van elk getal
-    
+    int SumEveryDigit = GetSumEveryDigit(Input, Length);
 
-    printf("\n");
-
-    long long int temp2 = Input;
-
-    //Elk getal opslaan in een array van rechts naar links
-    int EveryDigit[8];    
-    for (int i = 0; i < 8; i++){      
-        EveryDigit[i] = temp2 % 10;         
-        temp2 /= 100;                 
-    }   
-
-    for(int loop = 0; loop < 8; loop++)
-         printf("%d ", EveryDigit[loop]);
-
-
-    int totaal = 0;
-
-    for(int i = 0, n = GetLength(Input); i < n; i++)
-    {
-        int totaal =+ EveryDigit[i] + EveryOtherDigit[i];
-          
-    }
-    printf("%i", totaal);
-
+    printf("%i\n",SumEveryOtherDigitTimesTwo);
+    printf("%i\n",SumEveryDigit);
 
 }
 
-int GetSumEveryOtherDigitTimesTwo(long long int Input){
-    int SumEveryOtherDigit;    
+//Gets the sum of every other digit right to left
+//In 123456789012345
+//that is 4*2+2*2+0*2+8*2+6*2+4*2+2*2 
+int GetSumEveryOtherDigitTimesTwo(long long int Input, int Length){
+    int j = (int)round((float)Length/2); 
+    int array[8];
+    int SumEveryOtherDigit = 0;    
+   
+
     Input /= 10;
-    for (int i = 0; i < 8; i++){      
-        SumEveryOtherDigit += Input % 10 * 2;         
+    //j = 8 with length 16, 7 with 15 and 7 with 14
+    
+    for (int i = 0 ; i < j; i++){      
+        array[i] = Input % 10 * 2;         
         Input /= 100;                 
     }   
+
+
+
+
+
     return SumEveryOtherDigit;
+}
+
+//Gets the sum of every digit right to left
+//In 123456789012345
+//that is 5+3+1+9+7+5+3+1
+int GetSumEveryDigit(long long int Input, int Length){
+    int SumEveryDigit = 0;    
+    //j = 8 with length 16, 8 with 15 and 7 with 14
+    int j = Length/2; 
+
+    for (int i = 0 ; i < j; i++){      
+        SumEveryDigit += Input % 10;         
+        Input /= 100;                 
+    }   
+    return SumEveryDigit;
 }
