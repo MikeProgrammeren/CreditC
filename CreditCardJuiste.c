@@ -35,7 +35,7 @@ int main(void){
     //     printf ("First two %lld\n", GetFirstTwoDigits(Input));
     //     printf ("Card American Express\n");
     // }    
-    
+
 }
 
 long long int GetLong(){
@@ -57,7 +57,7 @@ int GetFirstTwoDigits(long long int Input){
     while (Input >= 100) {
         Input /= 10;
     }
-    printf("eerste twee getallen: %d\n", Input);
+    printf("eerste twee getallen: %i\n", Input);
     return Input;
 }
 
@@ -77,28 +77,44 @@ bool LuhnAlgorithm(long long int Input, int Length){
     printf("%i\n",SumEveryOtherDigitTimesTwo);
     printf("%i\n",SumEveryDigit);
 
+    //Check is last digit of both added is = 0
+
 }
 
-//Gets the sum of every other digit right to left
+//Gets the sum of every other >>digit<< right to left
 //In 123456789012345
 //that is 4*2+2*2+0*2+8*2+6*2+4*2+2*2 
+//8 + 4 + 0 + 16 + 12 + 8 + 4
+//!!!--> 8 + 4 + 0 + 1 + 6 + 1 + 2 + 8 + 4 = 24
 int GetSumEveryOtherDigitTimesTwo(long long int Input, int Length){
+     //j = 8 with length 16, 7 with 15 and 7 with 14
     int j = (int)round((float)Length/2); 
-    int array[8];
+    int array[j];
     int SumEveryOtherDigit = 0;    
-   
-
+    //Remove the most right number
     Input /= 10;
-    //j = 8 with length 16, 7 with 15 and 7 with 14
-    
+   
+    //Add every remaining other digit to the array
     for (int i = 0 ; i < j; i++){      
         array[i] = Input % 10 * 2;         
         Input /= 100;                 
     }   
 
+    //Add each other digit of the array (NOT the product themselves!)
+    for( int i = 0 ; i < j ; i++) {
+        //If the number in the array consist of 2 digits then digit > 9
+        //Then pull them apart and add seperatly
+        if (array[i] > 9){
+        int FirstNumber = array[i] / 10;
+        SumEveryOtherDigit += FirstNumber;
 
-
-
+        int SecondNumber = array[i] % 10;
+        SumEveryOtherDigit += SecondNumber;
+        }
+        //if < 9 add 
+        else SumEveryOtherDigit += array[i]; 
+   }
+    printf("Totaal: %i\n", SumEveryOtherDigit);
 
     return SumEveryOtherDigit;
 }

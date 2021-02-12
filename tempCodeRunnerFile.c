@@ -1,2 +1,1 @@
-
-    long long int Input = 4003600000000014LL; 
+    for( int i = 0 ; i < 5 ; i++) {
