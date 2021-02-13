@@ -15,26 +15,20 @@ int GetSumEveryDigit(long long int Input, int Length);
 //; and all Visa numbers start with 4.  and Visa uses 13- and 16-digit numbers.  
 
 int main(void){
-    ///long long int Input = GetLong();
-    //printf ("%lld\n", Input); 
+    //long long int Input = 378282246310005LL; 
+    
+    long long int Input = GetLong();
+    printf ("%lld\n", Input); 
 
-    long long int Input = 4003600000000014LL; 
+    
     int Length = GetLength(Input);
     int FirstTwoDigits = GetFirstTwoDigits(Input); 
-    
-    LuhnAlgorithm(Input, Length);
 
- 
-
-    //Aangegeven of het een terecht nummer is 
-    // All American Express numbers start with 34 or 37; American Express uses 15-digit numbers, 
-    // if(GetLength(Input) == 15 && (GetFirstTwoDigits(Input) == 34 || GetFirstTwoDigits(Input) == 37))
-    // {
-    //     printf ("In the IF statement: %lld\n", Input);
-    //     printf ("Length: %i\n", GetLength(Input));
-    //     printf ("First two %lld\n", GetFirstTwoDigits(Input));
-    //     printf ("Card American Express\n");
-    // }    
+    //All American Express numbers start with 34 or 37; American Express uses 15-digit numbers, 
+    if(Length == 15 && (FirstTwoDigits == 34 || FirstTwoDigits == 37) && LuhnAlgorithm(Input, Length))
+    {
+        printf ("Card American Express\n");
+    }    
 
 }
 
@@ -67,28 +61,34 @@ int GetFirstTwoDigits(long long int Input){
 //Check if the number qaulifies Luhns Algoritm
 //See implementation for the explanation
 bool LuhnAlgorithm(long long int Input, int Length){
-    
-    
     //Method sum of every other digit * 2
     int SumEveryOtherDigitTimesTwo = GetSumEveryOtherDigitTimesTwo(Input, Length);
-    //Methode 2 som van elk getal
+    //Methode sum of every digit 
     int SumEveryDigit = GetSumEveryDigit(Input, Length);
 
-    printf("%i\n",SumEveryOtherDigitTimesTwo);
-    printf("%i\n",SumEveryDigit);
+    printf("Sum inidivual digits every other number times two: %i\n",SumEveryOtherDigitTimesTwo);
+    printf("Sum every digit: %i\n",SumEveryDigit);
 
-    //Check is last digit of both added is = 0
-
+    //Check is last digit of both sums added is = 0
+    if((SumEveryOtherDigitTimesTwo + SumEveryDigit) % 10 == 0){
+        printf("Last digit is a 0!");
+        return true;
+    }
+    else{
+        printf("Last digit is NOT a 0!");  
+        return false;
+    }
 }
 
-//Gets the sum of every other >>digit<< right to left
+//Gets the sum of every other >>digit<< right to left and multiply by 2
+//Add the INDIVIDUAL digits
 //In 123456789012345
 //that is 4*2+2*2+0*2+8*2+6*2+4*2+2*2 
 //8 + 4 + 0 + 16 + 12 + 8 + 4
 //!!!--> 8 + 4 + 0 + 1 + 6 + 1 + 2 + 8 + 4 = 24
 int GetSumEveryOtherDigitTimesTwo(long long int Input, int Length){
-     //j = 8 with length 16, 7 with 15 and 7 with 14
-    int j = (int)round((float)Length/2); 
+    //j = 8 with length 16, 7 with 15 and 7 with 14
+    int j = Length/2; 
     int array[j];
     int SumEveryOtherDigit = 0;    
     //Remove the most right number
@@ -101,7 +101,7 @@ int GetSumEveryOtherDigitTimesTwo(long long int Input, int Length){
     }   
 
     //Add each other digit of the array (NOT the product themselves!)
-    for( int i = 0 ; i < j ; i++) {
+    for(int i = 0 ; i < j ; i++){
         //If the number in the array consist of 2 digits then digit > 9
         //Then pull them apart and add seperatly
         if (array[i] > 9){
@@ -111,11 +111,9 @@ int GetSumEveryOtherDigitTimesTwo(long long int Input, int Length){
         int SecondNumber = array[i] % 10;
         SumEveryOtherDigit += SecondNumber;
         }
-        //if < 9 add 
+        //if < 9 just add to total
         else SumEveryOtherDigit += array[i]; 
-   }
-    printf("Totaal: %i\n", SumEveryOtherDigit);
-
+    }
     return SumEveryOtherDigit;
 }
 
@@ -125,7 +123,9 @@ int GetSumEveryOtherDigitTimesTwo(long long int Input, int Length){
 int GetSumEveryDigit(long long int Input, int Length){
     int SumEveryDigit = 0;    
     //j = 8 with length 16, 8 with 15 and 7 with 14
-    int j = Length/2; 
+
+    int j = (int)round((float)Length/2); 
+   
 
     for (int i = 0 ; i < j; i++){      
         SumEveryDigit += Input % 10;         
